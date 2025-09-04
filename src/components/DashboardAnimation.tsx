@@ -19,9 +19,9 @@ const Panel: React.FC<PanelProps> = ({ type, delay }) => {
   const renderContent = () => {
     if (!isLoaded) {
       return (
-        <div className="w-full h-full animate-pulse">
-          <div className="h-3 bg-gray-300 rounded mb-2"></div>
-          <div className="h-full bg-gray-200 rounded"></div>
+        <div className="w-full h-full animate-pulse flex flex-col gap-1">
+          <div className="h-2 bg-gray-300 rounded flex-shrink-0"></div>
+          <div className="flex-1 bg-gray-200 rounded"></div>
         </div>
       );
     }
@@ -29,10 +29,10 @@ const Panel: React.FC<PanelProps> = ({ type, delay }) => {
     switch (type) {
       case 'single':
         return (
-          <div className="animate-fade-in">
-            <div className="h-2 bg-gradient-to-r from-blue-400 to-blue-300 rounded mb-1 w-12"></div>
-            <div className="h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded flex items-center justify-center">
-              <div className="w-8 h-2 bg-white/70 rounded"></div>
+          <div className="animate-fade-in h-full flex flex-col justify-center">
+            <div className="h-3 bg-blue-400 rounded mb-2 w-full"></div>
+            <div className="h-10 bg-blue-500 rounded flex items-center justify-center">
+              <div className="w-12 h-3 bg-white/70 rounded"></div>
             </div>
           </div>
         );
@@ -41,7 +41,7 @@ const Panel: React.FC<PanelProps> = ({ type, delay }) => {
         return (
           <div className="grid grid-cols-2 gap-1 animate-fade-in h-full">
             {[0, 1, 2, 3].map((i) => (
-              <div key={i} className="bg-gradient-to-br from-teal-400 to-teal-300 rounded p-1 flex flex-col justify-center items-center">
+              <div key={i} className="bg-teal-400 rounded p-1 flex flex-col justify-center items-center">
                 <div className="w-3 h-1 bg-white/70 rounded mb-0.5"></div>
                 <div className="w-4 h-1 bg-white/50 rounded"></div>
               </div>
@@ -52,62 +52,123 @@ const Panel: React.FC<PanelProps> = ({ type, delay }) => {
       case 'pie':
         return (
           <div className="flex items-center justify-center h-full animate-fade-in">
-            <div className="relative w-8 h-8">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400 via-blue-400 to-teal-400"></div>
-              <div className="absolute top-1 left-1 w-6 h-6 rounded-full bg-white/20"></div>
-              <div className="absolute top-2 left-2 w-1 h-4 bg-white/60 rounded transform rotate-45"></div>
+            <div className="relative w-12 h-12">
+              {/* 外环 */}
+              <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 48 48">
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="18"
+                  fill="none"
+                  stroke="#E5E7EB"
+                  strokeWidth="6"
+                />
+                {/* 进度环 - 75% */}
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="18"
+                  fill="none"
+                  stroke="#8B5CF6"
+                  strokeWidth="6"
+                  strokeDasharray="113"
+                  strokeDashoffset="28"
+                  strokeLinecap="round"
+                  className="animate-draw-circle"
+                />
+                {/* 第二层环 - 60% */}
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="12"
+                  fill="none"
+                  stroke="#E5E7EB"
+                  strokeWidth="4"
+                />
+                <circle
+                  cx="24"
+                  cy="24"
+                  r="12"
+                  fill="none"
+                  stroke="#06B6D4"
+                  strokeWidth="4"
+                  strokeDasharray="75"
+                  strokeDashoffset="30"
+                  strokeLinecap="round"
+                  className="animate-draw-circle"
+                  style={{ animationDelay: '0.3s' }}
+                />
+              </svg>
+
             </div>
           </div>
         );
 
       case 'line':
         return (
-          <div className="h-full flex items-end justify-between animate-fade-in px-1">
-            <svg className="w-full h-6" viewBox="0 0 40 20">
+          <div className="h-full flex items-center justify-center animate-fade-in p-1">
+            <svg className="w-full h-10" viewBox="0 0 40 24">
+              <defs>
+                <linearGradient id="fillGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.3" />
+                  <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.05" />
+                </linearGradient>
+              </defs>
               <path
-                d="M2,18 Q8,14 12,12 T20,8 T28,10 T38,6"
-                stroke="url(#lineGradient)"
-                strokeWidth="1.5"
+                d="M2,20 Q8,16 12,14 T20,10 T28,12 T38,8 L38,22 L2,22 Z"
+                fill="url(#fillGradient)"
+                className="animate-draw-line"
+              />
+              <path
+                d="M2,20 Q8,16 12,14 T20,10 T28,12 T38,8"
+                stroke="#3B82F6"
+                strokeWidth="2"
                 fill="none"
                 className="animate-draw-line"
               />
-              <defs>
-                <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#3B82F6" />
-                  <stop offset="50%" stopColor="#8B5CF6" />
-                  <stop offset="100%" stopColor="#14B8A6" />
-                </linearGradient>
-              </defs>
             </svg>
           </div>
         );
 
       case 'multiline':
         return (
-          <div className="h-full flex items-end justify-between animate-fade-in px-1">
-            <svg className="w-full h-6" viewBox="0 0 40 20">
+          <div className="h-full flex items-center justify-center animate-fade-in p-1">
+            <svg className="w-full h-10" viewBox="0 0 40 24">
+              <defs>
+                <linearGradient id="fillGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.02" />
+                </linearGradient>
+                <linearGradient id="fillGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.02" />
+                </linearGradient>
+              </defs>
               <path
-                d="M2,16 Q8,12 12,14 T20,10 T28,12 T38,8"
-                stroke="#3B82F6"
-                strokeWidth="1"
-                fill="none"
+                d="M2,14 Q8,10 12,12 T20,8 T28,10 T38,6 L38,22 L2,22 Z"
+                fill="url(#fillGradient1)"
                 className="animate-draw-line"
               />
               <path
-                d="M2,14 Q8,10 12,8 T20,6 T28,8 T38,4"
-                stroke="#8B5CF6"
-                strokeWidth="1"
-                fill="none"
+                d="M2,20 Q8,18 12,16 T20,18 T28,16 T38,18 L38,22 L2,22 Z"
+                fill="url(#fillGradient2)"
                 className="animate-draw-line"
                 style={{ animationDelay: '0.2s' }}
               />
               <path
-                d="M2,12 Q8,8 12,10 T20,14 T28,6 T38,10"
-                stroke="#14B8A6"
-                strokeWidth="1"
+                d="M2,14 Q8,10 12,12 T20,8 T28,10 T38,6"
+                stroke="#3B82F6"
+                strokeWidth="1.5"
                 fill="none"
                 className="animate-draw-line"
-                style={{ animationDelay: '0.4s' }}
+              />
+              <path
+                d="M2,20 Q8,18 12,16 T20,18 T28,16 T38,18"
+                stroke="#8B5CF6"
+                strokeWidth="1.5"
+                fill="none"
+                className="animate-draw-line"
+                style={{ animationDelay: '0.2s' }}
               />
             </svg>
           </div>
@@ -115,16 +176,16 @@ const Panel: React.FC<PanelProps> = ({ type, delay }) => {
 
       case 'bar':
         return (
-          <div className="h-full flex items-end justify-between animate-fade-in px-1 gap-0.5">
-            {[4, 6, 3, 5, 7, 4].map((height, i) => (
+          <div className="h-full flex items-end justify-between animate-fade-in px-1 pb-3 gap-0.5">
+            {[4, 6, 3, 5, 7, 4, 5].map((height, i) => (
               <div
                 key={i}
-                className="bg-gradient-to-t from-blue-500 to-purple-400 rounded-sm animate-grow-bar"
+                className="bg-blue-500 rounded-sm animate-grow-bar"
                 style={{
-                  width: '4px',
-                  height: `${height * 2}px`,
+                  width: '5px',
+                  '--target-height': `${height * 4}px`,
                   animationDelay: `${i * 0.1}s`
-                }}
+                } as React.CSSProperties}
               ></div>
             ))}
           </div>
@@ -136,9 +197,12 @@ const Panel: React.FC<PanelProps> = ({ type, delay }) => {
   };
 
   return (
-    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-2 h-16 shadow-lg">
-      {renderContent()}
-    </div>
+    <>
+      {/* 原始背景: bg-white/10 backdrop-blur-sm border border-white/20 */}
+      <div className="bg-white border border-gray-200 rounded-lg p-1 h-16 shadow-lg">
+        {renderContent()}
+      </div>
+    </>
   );
 };
 
@@ -170,7 +234,7 @@ export const DashboardAnimation: React.FC<DashboardAnimationProps> = ({ onReset 
   }, [key]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (isRunning) {
       interval = setInterval(() => {
         setTimer(prev => prev + 0.1);
@@ -197,7 +261,8 @@ export const DashboardAnimation: React.FC<DashboardAnimationProps> = ({ onReset 
         </span>
       </div>
       
-      <div key={key} className="w-[300px] h-[200px] bg-gradient-to-br from-blue-50/80 to-purple-50/80 backdrop-blur-md border border-white/30 rounded-xl p-3 shadow-xl">
+      {/* 原始背景: bg-gradient-to-br from-blue-50/80 to-purple-50/80 backdrop-blur-md */}
+      <div key={key} className="w-[300px] h-[200px] bg-white border border-gray-300 rounded-xl p-3 shadow-xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex space-x-1">
@@ -205,7 +270,7 @@ export const DashboardAnimation: React.FC<DashboardAnimationProps> = ({ onReset 
             <div className="w-2 h-2 bg-yellow-300 rounded-full"></div>
             <div className="w-2 h-2 bg-green-300 rounded-full"></div>
           </div>
-          <div className="text-xs text-gray-500 font-medium">Dashboard</div>
+
         </div>
 
         {/* Dashboard Grid */}
@@ -228,7 +293,7 @@ export const DashboardAnimation: React.FC<DashboardAnimationProps> = ({ onReset 
         <span>Replay</span>
       </button>
 
-      <style jsx>{`
+      <style>{`
         @keyframes fade-in {
           from {
             opacity: 0;
@@ -260,6 +325,15 @@ export const DashboardAnimation: React.FC<DashboardAnimationProps> = ({ onReset 
           }
         }
 
+        @keyframes draw-circle {
+          from {
+            stroke-dashoffset: 113;
+          }
+          to {
+            stroke-dashoffset: 28;
+          }
+        }
+
         .animate-fade-in {
           animation: fade-in 0.6s ease-out forwards;
         }
@@ -268,6 +342,12 @@ export const DashboardAnimation: React.FC<DashboardAnimationProps> = ({ onReset 
           stroke-dasharray: 100;
           stroke-dashoffset: 100;
           animation: draw-line 1s ease-out forwards;
+        }
+
+        .animate-draw-circle {
+          stroke-dasharray: 113;
+          stroke-dashoffset: 113;
+          animation: draw-circle 1.2s ease-out forwards;
         }
 
         .animate-grow-bar {

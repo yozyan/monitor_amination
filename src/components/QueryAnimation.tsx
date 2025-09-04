@@ -25,7 +25,7 @@ export const QueryAnimation: React.FC<QueryAnimationProps> = ({ onComplete }) =>
   useEffect(() => {
     setIsRunning(true);
     setTimer(0);
-    const timers: NodeJS.Timeout[] = [];
+    const timers: ReturnType<typeof setTimeout>[] = [];
 
     // Phase 1: Input simulation (500ms)
     timers.push(setTimeout(() => {
@@ -38,16 +38,20 @@ export const QueryAnimation: React.FC<QueryAnimationProps> = ({ onComplete }) =>
     }, 1500));
 
     // Phase 3: Search animation (2000ms)
+    const targetHighlights = [1, 2, 4, 6]; // Fixed records to highlight
+    let highlightIndex = 0;
+    
     const searchInterval = setInterval(() => {
       setSearchPosition(prev => {
         const next = (prev + 1) % 8;
         
-        // Randomly highlight records during search
-        if (Math.random() > 0.7) {
+        // Progressively highlight fixed records during search
+        if (next === targetHighlights[highlightIndex] && highlightIndex < targetHighlights.length) {
           setHighlightedRecords(prev => {
             const newHighlights = [...prev];
             if (!newHighlights.includes(next)) {
               newHighlights.push(next);
+              highlightIndex++;
             }
             return newHighlights;
           });
@@ -76,7 +80,7 @@ export const QueryAnimation: React.FC<QueryAnimationProps> = ({ onComplete }) =>
   }, [onComplete, key]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (isRunning) {
       interval = setInterval(() => {
         setTimer(prev => prev + 0.1);
@@ -95,7 +99,8 @@ export const QueryAnimation: React.FC<QueryAnimationProps> = ({ onComplete }) =>
         </span>
       </div>
       
-      <div key={key} className="w-[300px] h-[200px] bg-gradient-to-br from-emerald-50/80 to-blue-50/80 backdrop-blur-md border border-white/30 rounded-xl p-3 shadow-xl relative">
+      {/* 原始背景: bg-gradient-to-br from-emerald-50/80 to-blue-50/80 backdrop-blur-md */}
+      <div key={key} className="w-[300px] h-[200px] bg-white border border-gray-300 rounded-xl p-3 shadow-xl relative">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex space-x-1">
@@ -103,7 +108,7 @@ export const QueryAnimation: React.FC<QueryAnimationProps> = ({ onComplete }) =>
           <div className="w-2 h-2 bg-yellow-300 rounded-full"></div>
           <div className="w-2 h-2 bg-green-300 rounded-full"></div>
         </div>
-        <div className="text-xs text-gray-500 font-medium">Query</div>
+
       </div>
 
       {/* Search Input Area */}
@@ -115,7 +120,7 @@ export const QueryAnimation: React.FC<QueryAnimationProps> = ({ onComplete }) =>
               <div className="w-8 h-2 bg-blue-300/60 rounded animate-fade-in"></div>
             </div>
           ) : (
-            <div className="w-12 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded"></div>
+            <div className="w-12 h-2 bg-blue-400 rounded"></div>
           )}
         </div>
       </div>
@@ -134,7 +139,7 @@ export const QueryAnimation: React.FC<QueryAnimationProps> = ({ onComplete }) =>
                 ${phase === 'loading' 
                   ? 'bg-gray-200 animate-pulse' 
                   : isHighlighted
-                    ? 'bg-gradient-to-r from-emerald-400 to-teal-400 shadow-sm'
+                    ? 'bg-emerald-400 shadow-sm'
                     : 'bg-gray-300/60'
                 }
                 ${isSearching ? 'ring-2 ring-blue-400/50 animate-pulse-glow' : ''}
@@ -157,15 +162,15 @@ export const QueryAnimation: React.FC<QueryAnimationProps> = ({ onComplete }) =>
       </div>
 
       {/* Search Light Effect */}
-      {phase === 'searching' && (
+      {/* {phase === 'searching' && (
         <div 
-          className="absolute left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400/60 to-transparent rounded-full transition-all duration-250"
+          className="absolute left-0 w-full h-1 bg-blue-400/60 rounded-full transition-all duration-250"
           style={{
             top: `${85 + searchPosition * 16}px`,
             animation: 'pulse-glow 0.5s ease-in-out infinite'
           }}
         ></div>
-      )}
+      )} */}
       </div>
 
       <button

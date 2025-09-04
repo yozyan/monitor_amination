@@ -25,7 +25,7 @@ export const TableScanAnimation: React.FC<TableScanAnimationProps> = ({ onReset 
   useEffect(() => {
     setIsRunning(true);
     setTimer(0);
-    const timers: NodeJS.Timeout[] = [];
+    const timers: ReturnType<typeof setTimeout>[] = [];
 
     // Phase 1: Input simulation (500ms)
     timers.push(setTimeout(() => {
@@ -60,7 +60,7 @@ export const TableScanAnimation: React.FC<TableScanAnimationProps> = ({ onReset 
   }, [key]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (isRunning) {
       interval = setInterval(() => {
         setTimer(prev => prev + 0.1);
@@ -79,7 +79,8 @@ export const TableScanAnimation: React.FC<TableScanAnimationProps> = ({ onReset 
         </span>
       </div>
       
-      <div className="w-[300px] h-[200px] bg-gradient-to-br from-purple-50/80 to-pink-50/80 backdrop-blur-md border border-white/30 rounded-xl p-3 shadow-xl relative">
+      {/* 原始背景: bg-gradient-to-br from-purple-50/80 to-pink-50/80 backdrop-blur-md */}
+      <div className="w-[300px] h-[200px] bg-white border border-gray-300 rounded-xl p-3 shadow-xl relative">
         {/* Header */}
         <div className="flex items-center justify-between mb-3">
           <div className="flex space-x-1">
@@ -87,7 +88,7 @@ export const TableScanAnimation: React.FC<TableScanAnimationProps> = ({ onReset 
             <div className="w-2 h-2 bg-yellow-300 rounded-full"></div>
             <div className="w-2 h-2 bg-green-300 rounded-full"></div>
           </div>
-          <div className="text-xs text-gray-500 font-medium">Tables</div>
+
         </div>
 
         {/* Query Input Area */}
@@ -99,7 +100,7 @@ export const TableScanAnimation: React.FC<TableScanAnimationProps> = ({ onReset 
                 <div className="w-16 h-2 bg-purple-300/60 rounded animate-fade-in"></div>
               </div>
             ) : (
-              <div className="w-20 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded"></div>
+              <div className="w-20 h-2 bg-purple-400 rounded"></div>
             )}
           </div>
         </div>
@@ -118,7 +119,7 @@ export const TableScanAnimation: React.FC<TableScanAnimationProps> = ({ onReset 
                   ${phase === 'loading' 
                     ? 'bg-gray-200 animate-pulse' 
                     : isHighlighted
-                      ? 'bg-gradient-to-r from-purple-400 to-pink-400 shadow-sm'
+                      ? 'bg-purple-400 shadow-sm'
                       : 'bg-gray-300/60'
                   }
                   ${isScanning ? 'ring-2 ring-purple-400/50 animate-pulse-glow' : ''}
@@ -128,26 +129,26 @@ export const TableScanAnimation: React.FC<TableScanAnimationProps> = ({ onReset 
                   opacity: phase === 'loading' ? 0.6 : 1
                 }}
               >
-                {phase !== 'loading' && (
-                  <div className={`w-3 h-3 rounded ${isHighlighted ? 'bg-white/80' : 'bg-gray-400/60'}`}></div>
-                )}
+
               </div>
             );
           })}
         </div>
 
         {/* Scanning Light Effect */}
-        {phase === 'scanning' && (
+        {/* {phase === 'scanning' && (
           <div 
-            className="absolute w-full h-8 bg-gradient-to-r from-transparent via-purple-400/30 to-transparent rounded-full transition-all duration-200 pointer-events-none"
+            className="absolute rounded transition-all duration-200 pointer-events-none"
             style={{
-              top: `${70 + Math.floor(scanPosition / 4) * 32}px`,
-              left: '12px',
-              right: '12px',
+              top: `${82 + Math.floor(scanPosition / 4) * 32}px`,
+              left: '8px',
+              right: '8px',
+              height: '40px',
+              boxShadow: '0 0 30px rgba(147, 51, 234, 0.4), 0 0 60px rgba(147, 51, 234, 0.2), inset 0 0 20px rgba(168, 85, 247, 0.1)',
               animation: 'pulse-glow 0.4s ease-in-out infinite'
             }}
           ></div>
-        )}
+        )} */}
       </div>
 
       <button
