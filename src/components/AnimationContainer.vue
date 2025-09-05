@@ -3,25 +3,30 @@
     <!-- First Row -->
     <div class="flex flex-wrap justify-center gap-8">
       <!-- Table Scan Animation -->
-      <TableScanAnimation :on-reset="() => {}" />
+      <TableScanAnimation :on-reset="() => { }" />
 
       <!-- Data Query Animation -->
-      <QueryAnimation :on-complete="() => {}" />
+      <QueryAnimation :on-complete="() => { }" />
 
       <!-- Dashboard Animation -->
-      <DashboardAnimation :on-reset="() => {}" />
+      <DashboardAnimation :on-reset="() => { }" />
     </div>
 
     <!-- Second Row with Title Overlays -->
     <div class="flex flex-wrap justify-center gap-8">
       <!-- Table Scan Animation with Title -->
-      <TableScanAnimationWithTitle :on-reset="() => {}" />
+      <TableScanAnimationWithTitle :on-reset="() => { }" />
 
       <!-- Data Query Animation with Title -->
-      <QueryAnimationWithTitle :on-complete="() => {}" />
+      <QueryAnimationWithTitle :on-complete="() => { }" />
 
       <!-- Dashboard Animation with Title -->
-      <DashboardAnimationWithTitle :on-reset="() => {}" />
+      <DashboardAnimationWithTitle :on-reset="() => { }" />
+    </div>
+
+    <!-- Third Row: Wireframe to Skeleton Animation -->
+    <div class="flex flex-wrap justify-center gap-8">
+      <WireframeLineLoadingAnimation />
     </div>
   </div>
 </template>
@@ -33,4 +38,5 @@ import TableScanAnimation from './TableScanAnimation.vue'
 import QueryAnimationWithTitle from './QueryAnimationWithTitle.vue'
 import DashboardAnimationWithTitle from './DashboardAnimationWithTitle.vue'
 import TableScanAnimationWithTitle from './TableScanAnimationWithTitle.vue'
+import WireframeLineLoadingAnimation from './WireframeLineLoadingAnimation.vue'
 </script>
