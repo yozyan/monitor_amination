@@ -65,6 +65,13 @@
       </div>
     </div>
 
+    <!-- Animated Title Description -->
+    <div class="text-center">
+      <h4 class="text-sm font-medium text-gray-700 mb-1">
+        <span class="inline-block animate-pulse">Searching data…</span>
+      </h4>
+    </div>
+
     <button
       @click="handleReplay"
       class="flex items-center space-x-2 px-3 py-1.5 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg shadow-lg hover:bg-white/30 transition-all duration-200 text-gray-700 text-sm font-medium"

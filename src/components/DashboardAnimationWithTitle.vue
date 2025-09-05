@@ -7,8 +7,7 @@
       </span>
     </div>
     
-    <!-- 原始背景: bg-gradient-to-br from-blue-50/80 to-purple-50/80 backdrop-blur-md -->
-    <div :key="key" class="w-[300px] h-[200px] bg-white border border-gray-300 rounded-xl p-3 shadow-xl">
+    <div :key="key" class="w-[300px] h-[200px] bg-white border border-gray-300 rounded-xl p-3 shadow-xl relative">
       <!-- Header -->
       <div class="flex items-center justify-between mb-3">
         <div class="flex space-x-1">
@@ -27,13 +26,12 @@
           :delay="panel.delay"
         />
       </div>
-    </div>
 
-    <!-- Animated Title Description -->
-    <div class="text-center">
-      <h4 class="text-sm font-medium text-gray-700 mb-1">
-        <span class="inline-block animate-pulse">Generating monitor board…</span>
-      </h4>
+      <!-- Gradient Overlay with Title -->
+      <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-300/60 to-transparent rounded-b-xl flex items-end justify-between pb-3 pl-4 pr-4">
+          <h4 class="text-gray-800 text-sm font-medium text-left">Generating monitor board…</h4>
+          <button class="text-gray-800 text-lg font-bold hover:text-gray-600 transition-colors">×</button>
+        </div>
     </div>
 
     <button
@@ -123,66 +121,3 @@ onUnmounted(() => {
   }
 })
 </script>
-
-<style scoped>
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes draw-line {
-  from {
-    stroke-dasharray: 100;
-    stroke-dashoffset: 100;
-  }
-  to {
-    stroke-dasharray: 100;
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes grow-bar {
-  from {
-    height: 0;
-  }
-  to {
-    height: var(--target-height);
-  }
-}
-
-@keyframes draw-circle {
-  from {
-    stroke-dashoffset: 113;
-  }
-  to {
-    stroke-dashoffset: 28;
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.6s ease-out forwards;
-}
-
-.animate-draw-line {
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation: draw-line 1s ease-out forwards;
-}
-
-.animate-draw-circle {
-  stroke-dasharray: 113;
-  stroke-dashoffset: 113;
-  animation: draw-circle 1.2s ease-out forwards;
-}
-
-.animate-grow-bar {
-  height: 0;
-  animation: grow-bar 0.8s ease-out forwards;
-}
-</style>

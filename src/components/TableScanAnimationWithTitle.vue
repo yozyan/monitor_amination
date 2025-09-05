@@ -7,7 +7,6 @@
       </span>
     </div>
     
-    <!-- 原始背景: bg-gradient-to-br from-purple-50/80 to-pink-50/80 backdrop-blur-md -->
     <div class="w-[300px] h-[200px] bg-white border border-gray-300 rounded-xl p-3 shadow-xl relative">
       <!-- Header -->
       <div class="flex items-center justify-between mb-3">
@@ -50,13 +49,12 @@
         >
         </div>
       </div>
-    </div>
 
-    <!-- Animated Title Description -->
-    <div class="text-center">
-      <h4 class="text-sm font-medium text-gray-700 mb-1">
-        <span class="inline-block animate-pulse">Scanning datasource…</span>
-      </h4>
+      <!-- Gradient Overlay with Title -->
+      <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-300/60 to-transparent rounded-b-xl flex items-end justify-between pb-3 pl-4 pr-4">
+          <h4 class="text-gray-800 text-sm font-medium text-left">Scanning datasource…</h4>
+          <button class="text-gray-800 text-lg font-bold hover:text-gray-600 transition-colors">×</button>
+        </div>
     </div>
 
     <button
@@ -86,59 +84,55 @@ const key = ref(0)
 const timer = ref(0)
 const isRunning = ref(false)
 
-const tables = Array.from({ length: 12 }, (_, i) => i)
+const tables = Array.from({ length: 16 }, (_, i) => i)
 
-let timers: ReturnType<typeof setTimeout>[] = []
-let scanInterval: ReturnType<typeof setInterval> | null = null
+let phaseTimer: ReturnType<typeof setTimeout> | null = null
+let scanTimer: ReturnType<typeof setInterval> | null = null
 let timerInterval: ReturnType<typeof setInterval> | null = null
 
 const handleReplay = () => {
   key.value += 1
-  phase.value = 'input'
-  scanPosition.value = 0
-  finalHighlightedTable.value = null
   timer.value = 0
   isRunning.value = true
 }
 
 const startAnimation = () => {
-  // Clear existing timers
-  timers.forEach(clearTimeout)
-  timers = []
-  if (scanInterval) {
-    clearInterval(scanInterval)
-    scanInterval = null
-  }
-
+  // Clear any existing timers
+  if (phaseTimer) clearTimeout(phaseTimer)
+  if (scanTimer) clearInterval(scanTimer)
+  
+  phase.value = 'input'
+  scanPosition.value = 0
+  finalHighlightedTable.value = null
   isRunning.value = true
   timer.value = 0
-
-  // Phase 1: Input simulation (500ms)
-  timers.push(setTimeout(() => {
+  
+  // Input phase (500ms)
+  phaseTimer = setTimeout(() => {
     phase.value = 'loading'
-  }, 500))
-
-  // Phase 2: Tables loading (1000ms)
-  timers.push(setTimeout(() => {
-    phase.value = 'scanning'
-  }, 1500))
-
-  // Phase 3: Scanning animation (2500ms)
-  scanInterval = setInterval(() => {
-    scanPosition.value = (scanPosition.value + 1) % 12
-  }, 200)
-
-  // Phase 4: Complete (4000ms)
-  timers.push(setTimeout(() => {
-    if (scanInterval) {
-      clearInterval(scanInterval)
-      scanInterval = null
-    }
-    phase.value = 'complete'
-    // Highlight one final table (table 5 for example)
-    finalHighlightedTable.value = 5
-    isRunning.value = false
-  }, 4000))
+    
+    // Loading phase (800ms)
+    phaseTimer = setTimeout(() => {
+      phase.value = 'scanning'
+      
+      // Scanning animation
+      let currentPosition = 0
+      scanTimer = setInterval(() => {
+        scanPosition.value = currentPosition
+        currentPosition = (currentPosition + 1) % tables.length
+        
+        // After 1.5 seconds of scanning, highlight final table and complete
+        if (currentPosition === 0) {
+          setTimeout(() => {
+            if (scanTimer) clearInterval(scanTimer)
+            finalHighlightedTable.value = 5 // Highlight table 5
+            phase.value = 'complete'
+            isRunning.value = false
+          }, 200)
+        }
+      }, 100)
+    }, 800)
+  }, 500)
 }
 
 watch(key, () => {
@@ -163,40 +157,28 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  timers.forEach(clearTimeout)
-  if (scanInterval) {
-    clearInterval(scanInterval)
-  }
-  if (timerInterval) {
-    clearInterval(timerInterval)
-  }
+  if (phaseTimer) clearTimeout(phaseTimer)
+  if (scanTimer) clearInterval(scanTimer)
+  if (timerInterval) clearInterval(timerInterval)
 })
 </script>
 
 <style scoped>
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; width: 0; }
+  to { opacity: 1; width: 4rem; }
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(147, 51, 234, 0.5);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(147, 51, 234, 0.8), 0 0 30px rgba(147, 51, 234, 0.6);
-  }
+  0%, 100% { box-shadow: 0 0 5px rgba(168, 85, 247, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.8); }
 }
 
 .animate-fade-in {
-  animation: fade-in 0.5s ease-in-out;
+  animation: fade-in 0.8s ease-out;
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 0.4s ease-in-out infinite;
+  animation: pulse-glow 1s ease-in-out infinite;
 }
 </style>
