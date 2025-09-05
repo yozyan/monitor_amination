@@ -1,13 +1,28 @@
 <template>
-  <div class="flex flex-wrap justify-center gap-8">
-    <!-- Data Query Animation -->
-    <QueryAnimation :on-complete="() => {}" />
+  <div class="flex flex-col items-center space-y-8">
+    <!-- First Row -->
+    <div class="flex flex-wrap justify-center gap-8">
+      <!-- Table Scan Animation -->
+      <TableScanAnimation :on-reset="() => {}" />
 
-    <!-- Table Scan Animation -->
-    <TableScanAnimation :on-reset="() => {}" />
+      <!-- Data Query Animation -->
+      <QueryAnimation :on-complete="() => {}" />
 
-    <!-- Dashboard Animation -->
-    <DashboardAnimation :on-reset="() => {}" />
+      <!-- Dashboard Animation -->
+      <DashboardAnimation :on-reset="() => {}" />
+    </div>
+
+    <!-- Second Row with Title Overlays -->
+    <div class="flex flex-wrap justify-center gap-8">
+      <!-- Table Scan Animation with Title -->
+      <TableScanAnimationWithTitle :on-reset="() => {}" />
+
+      <!-- Data Query Animation with Title -->
+      <QueryAnimationWithTitle :on-complete="() => {}" />
+
+      <!-- Dashboard Animation with Title -->
+      <DashboardAnimationWithTitle :on-reset="() => {}" />
+    </div>
   </div>
 </template>
 
@@ -15,4 +30,7 @@
 import QueryAnimation from './QueryAnimation.vue'
 import DashboardAnimation from './DashboardAnimation.vue'
 import TableScanAnimation from './TableScanAnimation.vue'
+import QueryAnimationWithTitle from './QueryAnimationWithTitle.vue'
+import DashboardAnimationWithTitle from './DashboardAnimationWithTitle.vue'
+import TableScanAnimationWithTitle from './TableScanAnimationWithTitle.vue'
 </script>
