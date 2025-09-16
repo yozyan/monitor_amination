@@ -27,6 +27,7 @@
     <!-- Third Row: Wireframe to Skeleton Animation -->
     <div class="flex flex-wrap justify-center gap-8">
       <WireframeLineLoadingAnimation />
+      <PanelLoadingAnimation />
     </div>
   </div>
 </template>
@@ -39,4 +40,5 @@ import QueryAnimationWithTitle from './QueryAnimationWithTitle.vue'
 import DashboardAnimationWithTitle from './DashboardAnimationWithTitle.vue'
 import TableScanAnimationWithTitle from './TableScanAnimationWithTitle.vue'
 import WireframeLineLoadingAnimation from './WireframeLineLoadingAnimation.vue'
+import PanelLoadingAnimation from './PanelLoadingAnimation.vue'
 </script>
